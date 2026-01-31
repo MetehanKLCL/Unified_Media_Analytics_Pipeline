@@ -1,0 +1,19 @@
+CREATE SCHEMA IF NOT EXISTS silver;
+CREATE OR REPLACE VIEW silver.video_analytics AS
+SELECT
+    video_id,
+    title,
+    channel_title,
+    
+    -- Transforming Date Format
+    published_at::DATE AS publish_date,
+    
+    -- 2. Transforming Duration Format
+    EXTRACT(EPOCH FROM duration::INTERVAL) AS duration_seconds,
+
+    -- 3. Dealing Null Values
+    COALESCE(view_count, 0) AS view_count,
+    COALESCE(like_count, 0) AS like_count,
+    COALESCE(comment_count, 0) AS comment_count
+
+FROM bronze.youtube_videos;

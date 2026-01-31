@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres_dw:
+    image: postgres:15-alpine
+    container_name: youtube_analytics_dw
+    environment:
+      POSTGRES_USER: metehan_user
+      POSTGRES_PASSWORD: super_secret_password
+      POSTGRES_DB: unified_media_dw
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  postgres_data:

@@ -1,4 +1,32 @@
+# --- 1. Python ve Sistem Dosyaları (Standart) ---
+__pycache__/
+*.py[cod]
+*$py.class
+.DS_Store
 .env
 venv/
-__pycache__/
-.DS_Store
+.vscode/
+
+# --- 2. Hassas Konfigürasyon Dosyaları (KESİNLİKLE GİZLE) ---
+# Bu dosyalar şifre içerdiği için git'e gitmemeli
+config/client_secret.json
+config/facebook_token.json
+config/youtube_token.json
+config/competitor_pages.json
+
+# Not: competitor_pages.json şifre içermiyorsa (sadece link varsa) yükleyebilirsin.
+# Eğer şifre varsa onu da buraya ekle:
+
+# --- 3. Veri Klasörleri (Data Engineering Kuralı) ---
+# Ham veriyi asla repoya yüklemeyiz, çok yer kaplar.
+data/
+data/raw/
+data/processed/
+
+# --- 4. Log Dosyaları ---
+logs/
+*.log
+
+# --- 5. Test ve Geçici Dosyalar ---
+.pytest_cache/
+coverage.xml
