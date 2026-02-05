@@ -9,7 +9,7 @@ load_dotenv()
 APIFY_TOKEN = os.getenv("APIFY_TOKEN")
 
 # File Paths
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 CONFIG_FILE = os.path.join(BASE_DIR, "config", "competitor_pages.json")
 OUTPUT_DIR = os.path.join(BASE_DIR, "data", "raw", "facebook")
 

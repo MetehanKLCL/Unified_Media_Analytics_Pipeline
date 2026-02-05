@@ -1,9 +1,15 @@
 version: '3.8'
 
+networks:
+  media_pipeline_network:
+    driver: bridge
+
 services:
   postgres_dw:
     image: postgres:15-alpine
     container_name: youtube_analytics_dw
+    networks:
+      - media_pipeline_network
     environment:
       POSTGRES_USER: metehan_user
       POSTGRES_PASSWORD: super_secret_password
@@ -14,5 +20,45 @@ services:
       - postgres_data:/var/lib/postgresql/data
     restart: always
 
+  kafka:
+    image: confluentinc/cp-kafka:7.8.3
+    container_name: kafka
+    hostname: kafka
+    networks:
+      - media_pipeline_network
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:9093'
+      
+      KAFKA_LISTENERS: 'PLAINTEXT://0.0.0.0:29092,CONTROLLER://0.0.0.0:9093,EXTERNAL://0.0.0.0:9092'
+      
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:29092,EXTERNAL://localhost:9092'
+      
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      CLUSTER_ID: '1L6g7nGhU-eAKfL--X25wo'
+      KAFKA_LOG_DIRS: '/var/lib/kafka/data'
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+
+  kafka_ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka_ui
+    networks:
+      - media_pipeline_network
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local-kraft
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
+    depends_on:
+      - kafka
+
 volumes:
   postgres_data:
+  kafka_data:

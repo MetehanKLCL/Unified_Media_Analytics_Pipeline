@@ -3,7 +3,7 @@ import os
 import pandas as pd
 
 # --- AYARLAR ---
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 RAW_DIR = os.path.join(BASE_DIR, "data", "raw", "facebook")
 
 def read_data_with_links():
